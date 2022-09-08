@@ -1,0 +1,37 @@
+# Tasks to reach desired state present
+---
+- name: Add Microsoft DNF/YUM key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Add Microsoft yum repository for MDATP
+  ansible.builtin.yum_repository:
+    name: packages-microsoft-com-prod
+    description: Microsoft Defender for Endpoint
+    file: microsoft-prod
+    baseurl: https://packages.microsoft.com/rhel/8/prod/
+    gpgcheck: true
+    enabled: true
+
+- name: Manage package
+  ansible.builtin.package:
+    name: "{{ package }}"
+    state: present
+    update_cache: true
+  notify: Control service
+
+- name: Deploy Onboarding template
+  ansible.builtin.template:
+    src: mdatp_onboard.json.j2
+    dest: /etc/opt/microsoft/mdatp/mdatp_onboard.json
+    owner: root
+    group: mdatp
+    mode: 0640
+
+- name: Enable service
+  ansible.builtin.systemd:
+    name: "{{ service }}"
+    enabled: true
+    daemon_reload: true
+  notify: Control service

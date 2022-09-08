@@ -1,0 +1,10 @@
+---
+- name: Microsoft for defender for Endpoint
+  hosts: ansible01
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Include_role
+      ansible.builtin.include_role:
+        name: /home/ansible/git/ach_mde_role

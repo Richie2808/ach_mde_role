@@ -1,0 +1,4 @@
+# defaults file for ach_mde_role
+---
+desired_state: present
+package: mdatp

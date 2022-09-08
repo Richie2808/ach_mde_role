@@ -1,0 +1,19 @@
+# Tasks to converge to state absent
+---
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Remove Microsoft DNF/YUM key
+  ansible.builtin.rpm_key:
+    state: absent
+    key: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Remove Microsoft yum repository for MDATP
+  ansible.builtin.yum_repository:
+    name: packages-microsoft-com-prod
+    state: absent
+
+- name: Remove package
+  ansible.builtin.package:
+    name: "{{ package }}"
+    state: absent

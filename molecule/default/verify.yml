@@ -1,0 +1,10 @@
+# This is an example playbook to execute Ansible tests.
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Include ach_mde_role"
+      ansible.builtin.include_role:
+        name: "ach_mde_role"
+        tasks_from: verify
